@@ -1,4 +1,4 @@
-# ctf-web-docker-skill
+# CTF-web-onedocker-skill
 
 一个面向 Codex 的中文技能仓库，用来稳定生成单容器 CTF Web 题目骨架，并约束输出格式、启动逻辑与 Flag 注入安全细节。
 

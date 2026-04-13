@@ -34,7 +34,7 @@ jobs:
             TAG="${GITHUB_REF_NAME}"
           fi
 
-          ARCHIVE="ctf-web-docker-skill-${TAG}.zip"
+          ARCHIVE="CTF-web-onedocker-skill-${TAG}.zip"
 
           echo "tag=${TAG}" >> "${GITHUB_OUTPUT}"
           echo "archive=${ARCHIVE}" >> "${GITHUB_OUTPUT}"

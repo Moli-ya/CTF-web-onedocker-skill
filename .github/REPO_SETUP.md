@@ -4,7 +4,7 @@
 
 ## 1. 创建公开仓库
 
-建议仓库名直接使用 `ctf-web-docker-skill`，可见性设为 `Public`。
+建议仓库名直接使用 `CTF-web-onedocker-skill`，可见性设为 `Public`。
 
 ## 2. 禁止陌生人发 PR
 
