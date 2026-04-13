@@ -35,9 +35,3 @@ sh scripts/create_challenge_tree.sh demo-challenge
 
 - 推送形如 `v1.0.0` 的标签，或在 GitHub Actions 手动触发 `Release Package`。
 - 工作流会自动打包当前仓库为 ZIP，并上传到 GitHub Release 页面。
-
-## GitHub 设置
-
-- 仓库已包含 `.github/CODEOWNERS`，默认代码所有者为 `@Moli-ya`。
-- “只允许你自己推送和合并”的关键设置不能仅靠仓库文件完成，需要在 GitHub 仓库设置里启用规则。
-- 具体步骤见 [`.github/REPO_SETUP.md`](.github/REPO_SETUP.md)。
