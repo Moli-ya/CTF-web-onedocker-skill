@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "CTF Web 题目架构师"
+  short_description: "中文工作流：生成单容器CTF Web题目、Docker与启动脚本"
+  default_prompt: "使用 $ctf-web-architect-zh 设计一个新的 CTF Web 题目并输出完整文件。"
