@@ -1,10 +1,12 @@
 # CTF Web One-Docker Skill
 
-面向 Codex 的中文 CTF Web 出题技能仓库。它把“单容器交付、固定目录结构、Flag 安全注入、题目 README 与 WP 完整输出”这些容易遗漏的规则沉淀成一套可复用工作流，适合用来快速生成可部署、可归档、可复查的 Web 题目骨架。
+面向所有AI Agent的中文 CTF Web 出题技能仓库。它把“单容器交付、固定目录结构、Flag 安全注入、题目 README 与 WP 完整输出”这些容易遗漏的规则沉淀成一套可复用工作流，适合用来快速生成可部署、可归档、可复查的 Web 题目骨架。
 
 ## 这个仓库解决什么
 
-做 CTF Web 题目时，题目代码本身通常不是唯一风险点。更常见的问题是交付结构不统一、Docker 命令缺失、Flag 写死在镜像里、环境变量没有清理、WP 后补不完整，或者临时模板带入过多无关依赖。
+做 CTF Web 题目时，题目代码本身通常不是唯一风险点。更常见的问题是交付结构不统一、Docker 命令缺失、Flag 写死在镜像里、环境变量没有清理、WP 后补不完整，或者临时模板带入过多无关依赖。这些问题总是在我们调教ai的过程中出现反复、ai听不懂人话、或者我们描述不清想要的题目结构，别担心，这个skill里面已经把交付时结构规定的非常完好，参考了很多已经开源的ctf题目仓库，确保整目录结构和题目目录清晰便于整理。
+
+相信所有举办过小型CTF比赛的师傅都有过这么一个疑问，要是我想出sql注入题目的话，只能使用docker联排为mysql数据库单独开一个容器才可以，但是很多开源已知的ctf平台在创建动态容器时只能默认一个容器，不支持docker联排。所以本项目总结了本人所有的出题经验，为所有的可能用到sql数据库的题目提供了一定的解决方案。
 
 这个技能重点约束这些工程化细节：
 
@@ -47,13 +49,7 @@
 | `references/qc-web-style-summary.md` | 本地题库风格参考。 |
 | `scripts/create_challenge_tree.sh` | 快速创建标准题目目录骨架。 |
 
-## 在 Codex 中使用
 
-直接在 Codex 对话中调用技能：
-
-```text
-使用 $ctf-web-architect-zh 设计一个新的 CTF Web 题目并输出完整文件。
-```
 
 技能会先要求确认：
 
@@ -100,55 +96,5 @@ docker run --rm -p 8080:80 -e FLAG='flag{test_flag}' demo-challenge:latest
 
 实际题目中应把镜像名、端口、Flag 示例和路径替换为对应内容。
 
-## 本地编辑流程
-
-推荐用独立分支维护技能改动：
-
-```bash
-git clone https://github.com/Moli-ya/CTF-web-onedocker-skill.git
-cd CTF-web-onedocker-skill
-git switch -c codex/update-skill-docs
-```
-
-修改完成后检查差异：
-
-```bash
-git status --short
-git diff
-```
-
-确认无误后再提交：
-
-```bash
-git add README.md SKILL.md references scripts assets agents
-git commit -m "docs: improve skill readme"
-git push -u origin codex/update-skill-docs
-```
-
-## 维护检查清单
-
-更新这个技能时，建议重点检查这些地方：
-
-- `SKILL.md` 与 `references/output-contract.md` 的输出路径是否一致。
-- `scripts/create_challenge_tree.sh` 是否生成了技能要求的所有文件和目录。
-- 模板中的 `start.sh` 是否仍然包含 Flag 注入、缺失报错和环境变量清理逻辑。
-- Dockerfile 是否只保留最小运行依赖，避免带入调试工具和无关软件包。
-- 需要数据库的模板是否仍然保持单容器编排，不引入 `docker-compose`。
-- README 是否说明了本地编辑、生成骨架、打包发布和使用方式。
-
-## 发布 Release
-
-仓库内置 GitHub Actions 工作流 `.github/workflows/release-package.yml`。发布方式有两种：
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-或者在 GitHub Actions 页面手动触发 `Release Package`，输入类似 `v1.0.0` 的版本号。
-
-工作流会用 `git archive` 打包当前仓库，并把 ZIP 上传到对应的 GitHub Release。
-
-## 设计边界
-
-这个技能只负责生成 CTF Web 题目的工程骨架、容器配置、启动约束和题目文档，不负责在本地运行题目或验证漏洞利用链。按照技能规则，生成题目时不运行 PHP、Python、Java、Go、Rust 或 Docker 测试命令。
+## 使用方法
+克隆到本地，或者移步到本项目的发布界面，直接下载压缩包包，给你的agent让他自行安装即可
