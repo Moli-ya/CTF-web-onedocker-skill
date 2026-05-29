@@ -2,16 +2,19 @@
 
 ## 前置确认
 在输出代码前必须先确认：
-1. 技术栈（默认优先级：`PHP > HTML > Java > JavaScript > Go > Rust > Python`）
-2. 是否需要数据库（并说明单容器限制）
+1. 题目名称，且该名称必须作为题目顶层目录名。
+2. 技术栈（默认优先级：`PHP > HTML > Java > JavaScript > Go > Rust > Python`）。
+3. 是否需要数据库（并说明单容器限制）。
 
 ## 固定目录结构
 ```text
-/build/src/
-/build/service/
-/build/config/
-/build/dockerfile
-/readme.md
+/<题目名称>/build/src/
+/<题目名称>/build/service/
+/<题目名称>/build/config/
+/<题目名称>/build/dockerfile
+/<题目名称>/final/
+/<题目名称>/readme.md
+/<题目名称>/wp.md
 ```
 
 ## 输出格式
@@ -22,27 +25,32 @@
 ## 推荐输出骨架
 ````markdown
 ```dockerfile
-# /build/dockerfile
+# /<题目名称>/build/dockerfile
 ...
 ```
 
 ```bash
-# /build/service/start.sh
+# /<题目名称>/build/service/start.sh
 ...
 ```
 
 ```nginx
-# /build/config/nginx.conf
+# /<题目名称>/build/config/nginx.conf
 ...
 ```
 
 ```php
-# /build/src/index.php
+# /<题目名称>/build/src/index.php
 ...
 ```
 
 ```markdown
-# /readme.md
+# /<题目名称>/readme.md
+...
+```
+
+```markdown
+# /<题目名称>/wp.md
 ...
 ```
 ````
@@ -52,5 +60,8 @@
 - `start.sh` 检测 `FLAG/A1CTF_FLAG/GZCTF_FLAG`。
 - 缺失注入时输出 `error! please_call_admin` 并退出。
 - 写入 `/flag` 后执行环境变量清理。
-- `readme.md` 包含题型、难度、考点、构建和运行命令。
+- `readme.md` 包含题型、难度、考点、`docker build`、`docker save`、`docker load`、`docker run` 命令。
+- `docker save` 的导出目标必须位于题目根目录的 `final/` 下。
+- `wp.md` 包含解题步骤、漏洞利用链路、核心请求示例与获取 Flag 的完整路径。
+- `final/` 在题目交付时保持为空，仅用于保存 `docker save` 导出的镜像文件。
 
