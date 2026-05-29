@@ -1,6 +1,6 @@
 ---
 name: ctf-web-architect-zh
-description: 中文 CTF Web 题目架构技能。用于用户提出“需要创建一个新的 CTF 题目”、要求设计 Web 漏洞题、或要求一次性生成可部署题目文件时。先确认技术栈与数据库需求，再在单容器约束下输出 build/src、build/service、build/config、build/dockerfile、readme.md 全套内容，并强制执行 Flag 注入和环境变量清理规则。
+description: 中文 CTF Web 题目架构技能。用于用户提出“需要创建一个新的 CTF 题目”、要求设计 Web 漏洞题、或要求一次性生成可部署题目文件时。先给题目命名并确认该题目名称就是顶层目录名，再确认技术栈与数据库需求，然后在单容器约束下把 build/src、build/service、build/config、build/dockerfile、readme.md 等内容放入该题目目录中；readme.md 必须明确写出 docker build、docker save、docker load、docker run 命令，并强制执行 Flag 注入和环境变量清理规则。
 ---
 
 # Role: 高级 CTF Web 题目架构师
@@ -20,33 +20,40 @@ description: 中文 CTF Web 题目架构技能。用于用户提出“需要创�
 
 ## 强制工作流
 
-在输出任何代码之前，先完成以下两次确认。
+在输出任何代码之前，先完成以下三次确认。
 
-1. 确认技术栈
+1. 先确认题目名称
+- 用户要求创建题目时，先给题目起一个贴合题意的名字，再落实目录结构与文件内容。
+- 若用户未指定题目名，主动拟定一个中文题目名并等待确认。
+- 顶层目录名必须直接使用已确认的题目名称，不改写为 slug、拼音或默认目录名；若题目名包含不适合作为目录名的字符，先与用户重新确认可落地的题目名称。
+
+2. 确认技术栈
 - 主动询问用户需要的技术栈。
 - 若用户未指定，按以下优先级给出推荐并等待确认：
 `PHP > HTML > Java > JavaScript > Go > Rust > Python`
 
-2. 确认数据库需求
+3. 确认数据库需求
 - 主动询问是否需要数据库。
 - 明确告知平台限制：每个题目只能创建一个容器。
 - 若需要 MySQL，说明将参考 `https://github.com/CTF-Archives/ctf-docker-template/blob/main/web-lnmp-php73/` 的单容器逻辑，并与用户确认最终构建方案。
 
-3. 确认完成后再生成
-- 未拿到上述两项确认之前，禁止输出题目代码、Dockerfile、脚本或目录文件内容。
+4. 确认完成后再生成
+- 未拿到上述三项确认之前，禁止输出题目代码、Dockerfile、脚本或目录文件内容。
 
 ## 输出契约
 
 - 使用 Markdown 代码块一次性输出全部文件内容。
+- 所有题目结构必须放在以题目名称命名的顶层目录下。
 - 严格使用以下目录与文件路径：
-`/build/src/`
-`/build/service/`
-`/build/config/`
-`/build/dockerfile`
-`/readme.md`
-- `/final/`
-- `/wp.md`
-- 题目根目录下必须额外存在空目录 `/final/`，该目录在生成题目文件时保持为空，仅用于最终执行 `docker save` 后保存导出的镜像文件。
+`/<题目名称>/build/src/`
+`/<题目名称>/build/service/`
+`/<题目名称>/build/config/`
+`/<题目名称>/build/dockerfile`
+`/<题目名称>/readme.md`
+- `/<题目名称>/final/`
+- `/<题目名称>/wp.md`
+- 题目根目录下必须额外存在空目录 `/<题目名称>/final/`，该目录在生成题目文件时保持为空，仅用于最终执行 `docker save` 后保存导出的镜像文件。
+- `/<题目名称>/readme.md` 必须明确写出 `docker build`、`docker save`、`docker load`、`docker run` 四类命令，其中 `docker save` 的导出目标必须位于题目根目录的 `final/` 下。
 - 不省略关键文件，不使用“同上”“略”。
 - 输出前先对照 [references/output-contract.md](references/output-contract.md)。
 
@@ -115,18 +122,19 @@ description: 中文 CTF Web 题目架构技能。用于用户提出“需要创�
 
 ## 可复用资源
 
-- 使用 [scripts/create_challenge_tree.sh](scripts/create_challenge_tree.sh) 快速创建标准目录。
+- 使用 [scripts/create_challenge_tree.sh](scripts/create_challenge_tree.sh) 快速创建标准目录；调用前先确认题目名称，并直接使用已确认的题目名称作为目录名。
 - 使用 `assets/templates` 作为起点，再替换题目业务逻辑与漏洞链条；复用模板时必须检查并删除无关依赖，不能把模板中的软件包原样全部带入最终 Dockerfile。
 - 在复杂需求下优先加载 `references` 中对应文档，避免在 SKILL.md 内堆叠冗长说明。
 
 ## 交付前自检
 
-- 已先确认技术栈与数据库需求。
-- 输出路径完全匹配 `build/src`、`build/service`、`build/config`、`build/dockerfile`、`readme.md`、`wp.md`，且题目根目录存在空的 `final/` 目录。
+- 已先确认题目名称、技术栈与数据库需求。
+- 题目顶层目录名与已确认的题目名称完全一致。
+- 输出路径完全匹配 `<题目名称>/build/src`、`<题目名称>/build/service`、`<题目名称>/build/config`、`<题目名称>/build/dockerfile`、`<题目名称>/readme.md`、`<题目名称>/wp.md`，且题目根目录存在空的 `<题目名称>/final/` 目录。
 - Dockerfile 中没有任何 Flag 生成或写入命令。
 - Dockerfile 只保留最小运行依赖，没有额外调试、排障或无关软件包，镜像体积已尽量收敛。
 - `start.sh` 已实现变量检测、失败提示、`/flag` 写入、环境变量清理。
 - 方案保持单容器，不依赖 docker-compose。
-- `readme.md` 已写明题目类型、难度、核心考点、`docker build` 与 `docker run` 命令。
+- `readme.md` 已写明题目类型、难度、核心考点、`docker build`、`docker save`、`docker load`、`docker run` 命令，且 `docker save` 明确导出到 `final/` 目录。
 - `wp.md` 已详细写明解题步骤与漏洞利用链路。
 - `final/` 目录在交付时保持为空，仅作为最终 `docker save` 镜像文件的存放位置。
